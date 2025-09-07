@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Website🕸️</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- A simple overlay that renders a cascade of random characters behind everything. -->
+    <div id="background"></div>
+
+    <main>
+      <div class="container">
+        <div id="hero">
+          <h1 class="static">Vineet&nbsp;is</h1>
+          <div id="dynamic" class="dynamic-container">
+            <span id="word" class="word">educating</span>
+            <img id="emoji" src="icons/book.png" alt="emoji" class="emoji" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer navigation replicating the original site's columns -->
+      <footer>
+        <div class="container">
+          <div class="grid">
+            <div class="column">
+              <h3>Work</h3>
+              <ul>
+                <li>
+                  <img src="icons/about.png" class="icon" alt="" /><a href="#"
+                    >About</a
+                  >
+                </li>
+                <li>
+                  <img src="icons/portfolio.png" class="icon" alt="" /><a
+                    href="https://letcodewithvineet.github.io/vineet-portfolio/"
+                    >Portfolio</a
+                  >
+                </li>
+                <li>
+                  <img src="icons/memo.png" class="icon" alt="" /><a href="#"
+                    >Writing</a
+                  >
+                </li>
+                <li>
+                  <img src="icons/newsletter.png" class="icon" alt="" /><a
+                    href="#"
+                    >Newsletter</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="column">
+              <h3>Connect</h3>
+              <ul>
+                <li>
+                  <img src="icons/bird.png" class="icon" alt="" /><a
+                    href="https://x.com/VineetKumar2003"
+                    >Twitter</a
+                  >
+                </li>
+                <li>
+                  <img src="icons/camera.png" class="icon" alt="" /><a
+                    href="https://www.youtube.com/@letcodewithvineet"
+                    >YouTube</a
+                  >
+                </li>
+                <li>
+                  <img src="icons/handshake.png" class="icon" alt="" /><a
+                    href="https://www.linkedin.com/in/vineet-kumar-pandey20/"
+                    >LinkedIn</a
+                  >
+                </li>
+                <li>
+                  <img src="icons/book_closed.png" class="icon" alt="" /><a
+                    href="#"
+                    >Guestbook</a
+                  >
+                </li>
+                <li>
+                  <img src="icons/smile.png" class="icon" alt="" /><a href="#"
+                    >Emoji</a
+                  >
+                </li>
+              </ul>
+            </div>
+
+            <div class="column">
+              <h3>Weekly&nbsp;Learnings</h3>
+              <form id="subscribe-form" onsubmit="return false;">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  aria-label="Email address"
+                  required
+                />
+                <button type="submit">Join</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
