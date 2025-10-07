@@ -1,4 +1,8 @@
-/* === Dynamic word + emoji cycler with smooth fade === */
+/* === Utils (safe optional calls) === */
+const safeCall = (fn, ...args) =>
+  typeof fn === "function" ? fn(...args) : undefined;
+
+/* === Dynamic word + emoji cycler with smooth fade, pauses when tab hidden === */
 function setupWordCycler() {
   const wordEl = document.getElementById("word");
   const emojiEl = document.getElementById("emoji");
@@ -37,42 +41,63 @@ function setupWordCycler() {
     },
   ];
 
-  let i = 0;
+  let i = 0,
+    timer = null;
 
-  function applyItem(item) {
-    // fade out
+  const applyItem = (item) => {
     wordEl.classList.add("is-fading");
     emojiEl.classList.add("is-fading");
-
-    // after fade, swap content, then fade back in
     setTimeout(() => {
       wordEl.textContent = item.word;
       wordEl.style.backgroundImage = item.gradient;
-      emojiEl.src = item.emoji;
-
-      // allow browser to paint new content before removing fade class
+      if (emojiEl.getAttribute("src") !== item.emoji) emojiEl.src = item.emoji;
       requestAnimationFrame(() => {
         wordEl.classList.remove("is-fading");
         emojiEl.classList.remove("is-fading");
       });
-    }, 220); // match CSS transition duration
-  }
+    }, 220);
+  };
 
-  // initial render
+  const start = () => {
+    if (timer) return;
+    timer = setInterval(() => {
+      i = (i + 1) % items.length;
+      applyItem(items[i]);
+    }, 4000);
+  };
+  const stop = () => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+
+  // initial
   applyItem(items[i]);
+  start();
 
-  // rotate every 4s
-  setInterval(() => {
-    i = (i + 1) % items.length;
-    applyItem(items[i]);
-  }, 4000);
+  // Pause when tab is hidden (battery/perf win)
+  document.addEventListener("visibilitychange", () => {
+    document.hidden ? stop() : start();
+  });
+
+  // Reduced motion: swap instantly
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    stop();
+  }
 }
 
-/* Run both: background + cycler */
 document.addEventListener("DOMContentLoaded", () => {
-  // your existing generateBackground() + resize listener should already be here
-  if (typeof generateBackground === "function") generateBackground();
-  if (typeof debounce === "function")
-    window.addEventListener("resize", debounce(generateBackground, 150));
+  safeCall(window.generateBackground);
+  if (typeof window.debounce === "function") {
+    window.addEventListener(
+      "resize",
+      window.debounce(() => safeCall(window.generateBackground), 150)
+    );
+  } else {
+    window.addEventListener("resize", () =>
+      safeCall(window.generateBackground)
+    );
+  }
   setupWordCycler();
 });
