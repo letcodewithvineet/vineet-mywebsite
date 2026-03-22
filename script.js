@@ -87,6 +87,36 @@ function setupWordCycler() {
   }
 }
 
+function setupSubscribeForm() {
+  const form = document.getElementById("subscribe-form");
+  const emailInput = document.getElementById("email");
+  const nextInput = document.getElementById("subscribe-next");
+  const replyToInput = document.getElementById("subscribe-replyto");
+  const statusEl = document.getElementById("form-status");
+
+  if (!form || !emailInput || !nextInput || !replyToInput || !statusEl) return;
+
+  const currentUrl = new URL(window.location.href);
+  currentUrl.searchParams.set("subscribed", "1");
+  currentUrl.hash = "weekly-learnings";
+  nextInput.value = currentUrl.toString();
+
+  const syncReplyTo = () => {
+    replyToInput.value = emailInput.value.trim();
+  };
+
+  emailInput.addEventListener("input", syncReplyTo);
+  form.addEventListener("submit", syncReplyTo);
+
+  const pageUrl = new URL(window.location.href);
+  if (pageUrl.searchParams.get("subscribed") === "1") {
+    statusEl.textContent =
+      "Thanks for joining. Check your inbox, and if this is the first signup, confirm the activation email once.";
+    pageUrl.searchParams.delete("subscribed");
+    history.replaceState({}, "", `${pageUrl.pathname}${pageUrl.hash || ""}`);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   safeCall(window.generateBackground);
   if (typeof window.debounce === "function") {
@@ -100,4 +130,5 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
   setupWordCycler();
+  setupSubscribeForm();
 });
